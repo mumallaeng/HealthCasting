@@ -1,200 +1,201 @@
-# HealthCasting: 검색 트렌드와 함께 보는 건강 경보 체계
+English | [한국어](README.ko.md)
 
-> *(KDT) ROS2와 인공지능을 활용한 자율주행 로봇 개발자 양성과정 8기* 교육과정 내에서 Exploratory Data Analysis를 주제로한 과제입니다.
+# HealthCasting: A Health Alert System Paired with Search Trends
+
+> A project on the theme of Exploratory Data Analysis, developed as part of *(KDT) ROS2 and AI-based Autonomous Robot Developer Training Program, 8th Cohort*.
 
 
 <!--more-->
 
-## 프로젝트 개요
+## Project Overview
 
-- **기간**: 2024.12.12 ~ 2025.01.03 (3주)
-- **역할**: 프로젝트 팀장 및 트렌드 데이터 담당
-- **목표**: 검색 트렌드 기반 예방적 건강 경보 시스템 구축
+- **Duration**: 2024.12.12 ~ 2025.01.03 (3 weeks)
+- **Role**: Project lead and trend data owner
+- **Goal**: Build a preventive health alert system based on search trends
 
-> 사실과 무관한 가상의 배경입니다.
+> This is a fictional scenario, unrelated to real facts.
 
-보건복지부 첨단의료지원관 보건의료데이터진흥과의 팀이며, 다가오는 2025년 53회 보건의 날(4월 7일), 4월 보건의 달과 건강주간(7일-13일)을 위한 행사 및 사업을 준비하기 위해 데이터를 분석해야하는 상황.
+We are a team within the Health & Medical Data Promotion Division of the Advanced Medical Support Bureau, Ministry of Health and Welfare, tasked with analyzing data to prepare for the upcoming 53rd Health Day (April 7, 2025) and the April Health Month / Health Week (7th–13th) events.
 
-기상 데이터와 질병 발생 통계, 검색 트렌드를 연계 분석하여  
-특정 질병(예: 장염)의 발생 가능성을 예측하고,  
-국민에게 사전 경보 형태로 제공 가능한 건강 예보 체계를 제안함.
+By jointly analyzing weather data, disease occurrence statistics, and search trends,
+we predict the likelihood of a specific disease (e.g., gastroenteritis) breaking out,
+and propose a health forecasting system that can deliver an early warning to the public.
 
-### 기술 스택
-- **언어**: Python3.10
-- **라이브러리**: Selenium, BeautifulSoup, pytrends, Pandas, Numpy, Matplotlib
-- **데이터베이스**: MySQL, Amazon RDS, SQLAlchemy
-- **협업 도구**: Git, Slack, Jira, Confluence, Notion
+### Tech Stack
+- **Language**: Python 3.10
+- **Libraries**: Selenium, BeautifulSoup, pytrends, Pandas, Numpy, Matplotlib
+- **Database**: MySQL, Amazon RDS, SQLAlchemy
+- **Collaboration Tools**: Git, Slack, Jira, Confluence, Notion
 
 
-### 열정이 넘쳐 흐르는 4팀 **overflow**
+### Team 4, overflowing with passion — **overflow**
 
-| 역할 | 이름 (GitHub ID) | 주요 업무 요약 |
+| Role | Name (GitHub ID) | Summary of Responsibilities |
 |------|------------------|----------------------------------------------------------|
-| 팀장 | 김연우 ([@yonmilk](https://github.com/yonmilk)) | - 프로젝트 파일 구조 표준화 및 DB 관련 함수 통합<br>- 구글 트렌드 데이터 수집 및 질병 트렌드 변화 분석 |
-| 팀원 | 김규환 ([@kimsnake](https://github.com/kimsnake)) | - 보건의료 데이터포털에서 장염 환자 수 수집 및 정제<br>- 연령대별 질병 발생 통계 분석 및 인사이트 도출 |
-| 팀원 | 박세린 ([@selnimon](https://github.com/selnimon)) | - 네이버 트렌드 데이터 수집<br>- 트렌드 변화 데이터 분석 및 시각화 |
-| 팀원 | 이상윤 ([@sangyun1729](https://github.com/sangyun1729)) | - 기상청 지역별 일별 데이터(기온·습도·일교차)  수집<br>- 기상 변수와 질병 발생 간 상관관계 분석 |
+| Team Lead | Yeonwoo Gim ([@mumallaeng](https://github.com/mumallaeng)) | - Standardized the project file structure and consolidated DB-related functions<br>- Collected Google Trends data and analyzed disease trend changes |
+| Member | Kyuhwan Kim ([@kimsnake](https://github.com/kimsnake)) | - Collected and cleaned gastroenteritis patient counts from the healthcare data portal<br>- Analyzed disease occurrence statistics by age group and derived insights |
+| Member | Serin Park ([@selnimon](https://github.com/selnimon)) | - Collected Naver Trends data<br>- Analyzed and visualized trend changes |
+| Member | Sangyun Lee ([@sangyun1729](https://github.com/sangyun1729)) | - Collected daily regional weather data (temperature, humidity, diurnal range) from the Korea Meteorological Administration<br>- Analyzed correlations between weather variables and disease occurrence |
 
 ---
 
 
-### 분석 목적
+### Analysis Goals
 
-- **기상 상태와 질병 발생의 상관관계 분석**  
-- **검색 트렌드와 실제 질병 발생 통계 간 유사성 검토**
-- **기후 기반 질병 경보 체계 설계 가능성 타진**
+- **Analyze the correlation between weather conditions and disease occurrence**
+- **Examine the similarity between search trends and actual disease occurrence statistics**
+- **Explore the feasibility of designing a climate-based disease alert system**
 
-기상 상태에 따른 질병 유행 여부 파악:
+Determining whether a disease is trending based on weather conditions:
 
-- 기상 상태와 질병 관련 키워드의 관련성을 분석하기
-- 키워드(식중독, 인후염 등) 검색이 많아지면 실제 질병 발생이 많아지는지를 검토: 해당 검색어 트랜드와 질병 데이터 비교
-- 기상 데이터와 질병 발생 데이터 그리고 검색 트랜드를 모아서 기상 상태를 기반으로 해당 질병 주의!!!
-- 기상 변화에 따라서 주의해야할 질병을 국민들에게 미리 알릴 수 있음
+- Analyze the relationship between weather conditions and disease-related keywords
+- Check whether an increase in searches for keywords (food poisoning, pharyngitis, etc.) correlates with an actual increase in disease occurrence: compare search trends for those keywords against disease data
+- Combine weather data, disease occurrence data, and search trends to flag which disease to watch out for based on weather conditions
+- Enable advance public notice of which diseases to watch for as weather changes
 
-
----
-
-### 프로젝트 진행 순서
-
-1. 프로젝트 기획 및 주제 정의  
-2. 데이터 수집 및 정제  
-3. 상관 분석 및 시각화  
-4. 연령별/시기별 질병 트렌드 분석  
-5. 경보 모델 초안 및 예측 도출  
 
 ---
 
-### 사용 데이터
+### Project Process
 
-| 구분     | 출처 | 세부 내용 |
+1. Project planning and topic definition
+2. Data collection and cleaning
+3. Correlation analysis and visualization
+4. Disease trend analysis by age group and time period
+5. Draft alert model and forecast derivation
+
+---
+
+### Data Used
+
+| Category | Source | Details |
 |----------|------|-----------|
-| 기상 데이터 | 기상청 기상자료개방포털 | 지역별 일별 기온, 습도, 일교차 |
-| 대기질 데이터 | 에어코리아 | PM10, PM2.5 등 미세먼지 농도 |
-| 질병 통계 | 보건의료빅데이터개방시스템 | 연령대별 장염 환자 수 |
-| 검색 트렌드 | 네이버 데이터랩 / Google Trends | 질병 관련 키워드의 월별 검색량 |
+| Weather data | KMA Weather Data Open Portal | Daily temperature, humidity, and diurnal range by region |
+| Air quality data | AirKorea | PM10, PM2.5, and other particulate matter concentrations |
+| Disease statistics | Health and Medical Big Data Open System | Gastroenteritis patient counts by age group |
+| Search trends | Naver DataLab / Google Trends | Monthly search volume for disease-related keywords |
 
 ---
 
 
 
-### 프로젝트 구조
+### Project Structure
 
-**데이터 수집 (data_collect/)**
-- **Google Trends**: pytrends를 활용한 질병 관련 검색 트렌드 수집
-- **Naver Trends**: 네이버 데이터랩 API를 통한 국내 검색 트렌드 수집
-- **기상 데이터**: Selenium을 활용한 기상청 데이터 스크래핑
+**Data collection (data_collect/)**
+- **Google Trends**: Collect disease-related search trends using pytrends
+- **Naver Trends**: Collect domestic search trends via the Naver DataLab API
+- **Weather data**: Scrape KMA data using Selenium
 
-**데이터베이스 업로드 (database_upload/)**
-- 수집된 데이터를 MySQL 데이터베이스에 체계적으로 저장
-- 기상 데이터, 대기질 데이터, 검색 트렌드 데이터 통합 관리
-- DB 연결 및 쿼리 함수 모듈화 (db_function.py)
+**Database upload (database_upload/)**
+- Systematically store the collected data in a MySQL database
+- Manage weather data, air quality data, and search trend data in an integrated way
+- Modularize DB connection and query functions (db_function.py)
 
-**데이터 분석 (data_analysis/)**
-- **장염 분석**: 기상 변수와 장염 발생의 상관관계 분석
-- **식중독 분석**: 일교차와 식중독 관련 감염병의 상관관계 분석
-- **동상 분석**: 저온 환경과 동상 발생 패턴 분석
-- **상관관계 분석**: 다양한 기상 변수와 질병 발생 간의 종합 분석
-
----
-
-**주요 참고 링크**
-
-- [기상청 기상자료포털](https://data.kma.go.kr/)
-- [에어코리아 대기환경 정보](https://www.airkorea.or.kr/)
-- [네이버 데이터랩](https://datalab.naver.com/)
-- [보건의료빅데이터개방시스템](https://www.data.go.kr/)
+**Data analysis (data_analysis/)**
+- **Gastroenteritis analysis**: Analyze the correlation between weather variables and gastroenteritis occurrence
+- **Food poisoning analysis**: Analyze the correlation between diurnal temperature range and food-poisoning-related infectious diseases
+- **Frostbite analysis**: Analyze frostbite occurrence patterns in low-temperature environments
+- **Correlation analysis**: Comprehensive analysis of the relationship between various weather variables and disease occurrence
 
 ---
 
-## 프로젝트 결과 및 자료
+**Key Reference Links**
+
+- [KMA Weather Data Portal](https://data.kma.go.kr/)
+- [AirKorea Air Quality Information](https://www.airkorea.or.kr/)
+- [Naver DataLab](https://datalab.naver.com/)
+- [Health and Medical Big Data Open System](https://www.data.go.kr/)
+
+---
+
+## Results and Materials
 
 
 
-### 1. 장염 분석 결과
+### 1. Gastroenteritis Analysis Results
 
-<img width="1600" height="637" alt="1-1 장염환자수와검색어트랜드분석" src="https://github.com/user-attachments/assets/9b4eed84-c5e7-473e-a8a5-07df32e9ab24" name="trend_chart"/>
+<img width="1600" height="637" alt="1-1 Gastroenteritis patient count vs search trend analysis" src="https://github.com/user-attachments/assets/9b4eed84-c5e7-473e-a8a5-07df32e9ab24" name="trend_chart"/>
 
-#### 검색 트렌드와 실제 환자 수의 상관관계
-- **네이버 검색 트렌드**와 실제 장염 환자 수의 변화 패턴이 매우 유사
-  - 상승폭과 하강 시기가 일치하여 예측 지표로서의 가능성 확인
-- **구글 검색 트렌드**도 환자 수와 유사한 패턴을 보이나, 네이버보다는 일관성이 다소 낮음
-- 검색 트렌드 데이터를 활용한 조기 경보 시스템의 타당성 입증
-
-<br/><br/><br/>
-
-#### 기상 변수와 장염 발생의 상관관계
-
-<img width="1477" height="1600" alt="3-1 기상데이터와_장염환자_상관관계" src="https://github.com/user-attachments/assets/06abce50-732d-44b2-a35c-a5a610a28f58" />
-
-<img width="1600" height="638" alt="3-2 기상데이터와_장염환자" src="https://github.com/user-attachments/assets/053d2930-5f72-4bf7-a9f7-33ff3c18158a" />
-
-- **일교차(-0.66)**: 음의 상관관계로 일교차가 작을수록 환자 수 증가
-- **최저 습도(0.50)**: 양의 상관관계로 최저 습도가 높을수록 환자 수 증가
-- 온도 및 습도가 **극값(변곡점)에 도달하는 시점**에서 환자 수 급증 현상 관측
-- 여름철 고온다습 환경과 겨울철 환경 변화가 장염 발생에 영향
+#### Correlation between search trends and actual patient counts
+- The pattern of change in **Naver search trends** closely matches the actual change in gastroenteritis patient counts
+  - The timing of rises and falls coincide, confirming its potential as a predictive indicator
+- **Google search trends** also show a similar pattern to patient counts, though somewhat less consistent than Naver
+- This validates the feasibility of an early-warning system based on search trend data
 
 <br/><br/><br/>
 
-#### 연령별 장염 발생 패턴
+#### Correlation between weather variables and gastroenteritis occurrence
 
-<img width="1600" height="635" alt="2-2 연령별_환자분석" src="https://github.com/user-attachments/assets/16627e84-49b1-4141-ae32-4af2cfce32ad" />
+<img width="1477" height="1600" alt="3-1 Correlation between weather data and gastroenteritis patients" src="https://github.com/user-attachments/assets/06abce50-732d-44b2-a35c-a5a610a28f58" />
 
-- **0~9세 아동층**에서 장염 환자 수가 압도적으로 많음
-- 연령이 증가할수록 장염 발생률이 감소하는 경향
-- **2024년 1월**: 최근 5년간 최대 환자 수 기록 (708,131명)
-- **2020년 3월**: 최근 5년간 최소 환자 수 기록 (287,005명, COVID-19 영향 추정)
-- 계절별로는 **여름(7-8월)**과 **겨울(1월)** 에 환자 수가 크게 증가
+<img width="1600" height="638" alt="3-2 Weather data and gastroenteritis patients" src="https://github.com/user-attachments/assets/053d2930-5f72-4bf7-a9f7-33ff3c18158a" />
 
-<br/><br/><br/>
-
-### 2. 식중독 관련 감염병 분석
-
-#### 네이버 트렌드와 환자 수의 상관관계
-
-<img alt="1-2 장염환자수와네이버검색어트랜드" src="https://github.com/user-attachments/assets/c22c2811-1040-4e06-afeb-3dde54a6daf9" />
-
-- 식중독 검색 트렌드와 실제 환자 수가 유사한 계절적 패턴을 보임
-- 여름철(6-8월)에 검색량과 환자 수가 동시에 급증
+- **Diurnal temperature range (-0.66)**: A negative correlation — patient counts increase as the diurnal range narrows
+- **Minimum humidity (0.50)**: A positive correlation — patient counts increase as minimum humidity rises
+- A surge in patient counts is observed when temperature and humidity **reach extreme (inflection) points**
+- Both the hot, humid summer environment and winter environmental changes affect gastroenteritis occurrence
 
 <br/><br/><br/>
 
-#### 일교차와의 상관관계
+#### Gastroenteritis occurrence pattern by age group
 
-<img alt="3-4 장염일교차" src="https://github.com/user-attachments/assets/4f37baac-5724-4cea-8f6e-10edd5573673" />
+<img width="1600" height="635" alt="2-2 Patient analysis by age group" src="https://github.com/user-attachments/assets/16627e84-49b1-4141-ae32-4af2cfce32ad" />
 
-- 서울 지역 데이터 기준으로 일교차와 식중독 발생 패턴 분석
-- 일교차가 큰 **봄철(4-5월)**과 가을철에 환자 수 증가 경향
-- 여름철에는 일교차가 작아도 고온으로 인한 환자 수 증가
+- Gastroenteritis patient counts are overwhelmingly high in the **0–9 age group**
+- Occurrence rate tends to decrease as age increases
+- **January 2024**: Highest patient count in the last 5 years (708,131)
+- **March 2020**: Lowest patient count in the last 5 years (287,005, presumably due to COVID-19)
+- By season, patient counts rise sharply in **summer (July–August)** and **winter (January)**
 
 <br/><br/><br/>
 
-### 3. 결론
+### 2. Food-Poisoning-Related Infectious Disease Analysis
 
-- 0~9세 아동층이 장염 발생에 가장 취약
-- 기상 변수(일교차, 습도 등)가 질병 발생에 유의미한 영향
-- 구글보다는 네이버 검색 트렌드가 국내 질병 발생 예측에 더 적합
+#### Correlation between Naver trends and patient counts
+
+<img alt="1-2 Gastroenteritis patient count vs Naver search trend" src="https://github.com/user-attachments/assets/c22c2811-1040-4e06-afeb-3dde54a6daf9" />
+
+- Food poisoning search trends show a seasonal pattern similar to actual patient counts
+- Both search volume and patient counts spike simultaneously in summer (June–August)
+
+<br/><br/><br/>
+
+#### Correlation with diurnal temperature range
+
+<img alt="3-4 Gastroenteritis diurnal range" src="https://github.com/user-attachments/assets/4f37baac-5724-4cea-8f6e-10edd5573673" />
+
+- Analyzed the pattern between diurnal temperature range and food poisoning occurrence based on Seoul-region data
+- Patient counts tend to rise in **spring (April–May)** and autumn, when the diurnal range is large
+- In summer, patient counts rise due to high temperatures even when the diurnal range is small
+
+<br/><br/><br/>
+
+### 3. Conclusion
+
+- Children aged 0–9 are the most vulnerable to gastroenteritis
+- Weather variables (diurnal range, humidity, etc.) have a meaningful effect on disease occurrence
+- Naver search trends are better suited than Google's for predicting domestic disease occurrence
 
 
 ---
 
-### 4. 예측 및 제안
+### 4. Forecast and Proposal
 
-#### HealthCasting 경보 시스템
+#### HealthCasting Alert System
 
-1. **검색 트렌드 기반 조기 경보**
-   - 네이버 검색 트렌드를 실시간 모니터링하여 질병 유행 1개월 전 예측
-   - 특정 임계값 초과 시 국민 건강 주의보 발령
+1. **Early warning based on search trends**
+   - Monitor Naver search trends in real time to predict disease outbreaks one month in advance
+   - Issue a public health advisory when a specific threshold is exceeded
 
-2. **기상 조건 기반 위험도 평가**
-   - 일교차, 습도 등 기상 변수를 활용한 질병 발생 위험도 계산
-   - 기상청 예보 데이터와 연계한 사전 경보 시스템
+2. **Risk assessment based on weather conditions**
+   - Calculate disease occurrence risk using weather variables such as diurnal range and humidity
+   - An early-warning system linked with KMA forecast data
 
-3. **연령별 맞춤형 경보**
-   - 0~9세 아동층 대상 장염 집중 관리
-   - 연령대별 취약 질병에 대한 차별화된 경보 제공
+3. **Age-tailored alerts**
+   - Focused management of gastroenteritis for the 0–9 age group
+   - Differentiated alerts for diseases that specific age groups are vulnerable to
 
-4. **2025년 전망**
-   - 과거 데이터 패턴 분석 결과, 2025년 1월 장염 재유행 가능성 높음
-   - 여름철(7-8월) 장염 및 식중독 대비 필요
-   - 보건의 날(4월 7일) 행사와 연계한 국민 건강 캠페인 가능
-
+4. **2025 Outlook**
+   - Based on historical data pattern analysis, a gastroenteritis resurgence is likely in January 2025
+   - Preparation needed for gastroenteritis and food poisoning in summer (July–August)
+   - Potential for a public health campaign tied to Health Day (April 7) events
